@@ -1,0 +1,25 @@
+body {
+  background-color: #00550e;
+}
+.wrapper {
+  position:relative;
+  width: 450px;
+  min-height: 300px;
+  margin: 10% auto auto auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 7%;
+}
+button {
+  font-size: 24px;
+  padding: 10px; 
+  border-radius: 7%; 
+}
+
+#quote-text {
+  font-size: 30px;
+}
+button:focus {
+  outline: none;
+  box-shadow: 0 0 3pt 2pt #00550e;
+}
