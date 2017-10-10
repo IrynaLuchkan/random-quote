@@ -1,6 +1,25 @@
-window.onload = function () {
-    var btnGenerate = document.getElementById("generate-quote");
+window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
 
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));
+
+window.onload = function () {
+    var btnGenerate = document.getElementById("generate-quote"),
+    btnTwit = document.getElementById("tweetMessage");
+
+    btnGenerate.addEventListener("click", downloadNow);
     btnGenerate.addEventListener("click", downloadNow);
 
     var myQuote = 'http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=4';
@@ -33,10 +52,19 @@ window.onload = function () {
         .then(function(processJSON){           
             elemQuoteText.innerHTML = processJSON[0].content;
             document.getElementById('quote-autor').innerHTML = processJSON[0].title;
+
+            twttr.widgets.createShareButton(
+                '',
+                document.getElementById('tweetContainer'),
+                {
+                  text: `${elemQuoteText.textContent} -${document.getElementById('quote-autor').textContent}`
+                }
+              );
         })
 
         .catch(function () {
             document.getElementById('quote-text').innerHTML = "OH NOOOOOOOOOO";
         })  
     }
+
 };

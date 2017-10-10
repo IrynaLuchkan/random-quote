@@ -4,12 +4,19 @@ body {
 .wrapper {
   position:relative;
   width: 450px;
-  min-height: 300px;
+  min-height: 250px;
   margin: 10% auto auto auto;
   padding: 20px;
   background-color: #fff;
   border-radius: 7%;
 }
+
+.btnContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
 button {
   font-size: 24px;
   padding: 10px; 
