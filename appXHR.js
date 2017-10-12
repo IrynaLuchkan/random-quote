@@ -13,8 +13,8 @@ window.onload = function () {
         xmlhttp.setRequestHeader("Cache-Control", "max-age=0");
         xmlhttp.send();
         xmlhttp.onreadystatechange = function() {
-            if (xmlhttp.readyState == 4) {
-                if(xmlhttp.status == 200) {
+            if (xmlhttp.readyState === 4) {
+                if(xmlhttp.status === 200) {
                     var objResponse = JSON.parse(xmlhttp.responseText);
                     
                     var elemQuoteText = document.getElementById('quote-text');
