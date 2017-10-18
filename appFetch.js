@@ -19,10 +19,9 @@ window.onload = function () {
     var btnGenerate = document.getElementById("generate-quote"),
     btnTwit = document.getElementById("tweetMessage");
 
-    btnGenerate.addEventListener("click", downloadNow);
-    btnGenerate.addEventListener("click", downloadNow);
+    btnGenerate.addEventListener("click", downloadNow);   
 
-    var myQuote = 'http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=4';
+    var myQuote = 'http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1';
     //https://cors-everywhere.herokuapp.com/https://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1
 
     var elemQuoteText = document.getElementById('quote-text');
@@ -41,17 +40,18 @@ window.onload = function () {
             },
         })
         .then(res => 
-             {
-            if(res.headers.get("content-type") &&
-                res.headers.get("content-type").toLowerCase().indexOf("application/json") !== -1) {                      
-                return res.json()
-            } else {
-            throw new TypeError()
+            {
+                if(res.headers.get("content-type") &&
+                    res.headers.get("content-type").toLowerCase().indexOf("application/json") !== -1) {                      
+                    return res.json()
+                } else {
+                throw new TypeError()
             }
         })
         .then(function(processJSON){           
             elemQuoteText.innerHTML = processJSON[0].content;
             document.getElementById('quote-autor').innerHTML = processJSON[0].title;
+            document.getElementById('tweetContainer').innerHTML = '';
 
             twttr.widgets.createShareButton(
                 '',
