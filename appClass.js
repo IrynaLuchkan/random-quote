@@ -8,10 +8,9 @@ window.onload = function () {
             this.addClickEvent()
         }
 
-        addClickEvent() {
-            console.log('hi. addClickEvent runs');            
+        addClickEvent() {                       
             this.btnGenerate.addEventListener("click", () => {
-                console.log(this);
+                
                 this.btnGenerate.innerHTML = "Please wait";
                 return fetch(this.myQuoteUrl, {
                     method: 'GET',
