@@ -1,11 +1,11 @@
 window.onload = function () {
     class GenerateQuote {
         constructor(btnGenerateIdent, quoteTextIdent, quoteAutorIdent) {
-            this.btnGenerate = document.querySelector(btnGenerateIdent),
-            this.quoteText = document.querySelector(quoteTextIdent),
-            this.quoteAutor = document.querySelector(quoteAutorIdent),
-            this.myQuoteUrl = 'http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1',
-            this.addClickEvent()
+            this.btnGenerate = document.querySelector(btnGenerateIdent);
+            this.quoteText = document.querySelector(quoteTextIdent);
+            this.quoteAutor = document.querySelector(quoteAutorIdent);
+            this.myQuoteUrl = 'http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1';
+            this.addClickEvent();
         }
 
         addClickEvent() {                       
