@@ -4,13 +4,15 @@ window.onload = function () {
             this.btnGenerate = document.querySelector(btnGenerateIdent),
             this.quoteText = document.querySelector(quoteTextIdent),
             this.quoteAutor = document.querySelector(quoteAutorIdent),
-            this.myQuoteUrl = 'http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1'
+            this.myQuoteUrl = 'http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1',
+            this.addClickEvent()
         }
 
         addClickEvent() {
-            console.log('hi');            
+            console.log('hi. addClickEvent runs');            
             this.btnGenerate.addEventListener("click", () => {
                 console.log(this);
+                this.btnGenerate.innerHTML = "Please wait";
                 return fetch(this.myQuoteUrl, {
                     method: 'GET',
                     type: 'cors',
@@ -31,61 +33,47 @@ window.onload = function () {
                         throw new TypeError()
                     }
                 })
-                .then(function(processJSON){           
-                    elemQuoteText.innerHTML = processJSON[0].content;
-                    document.getElementById('quote-autor').innerHTML = processJSON[0].title;
-                    // document.getElementById('tweetContainer').innerHTML = '';
+                .then((processJSON) => {           
+                    this.quoteText.innerHTML = processJSON[0].content;
+                    this.quoteAutor.innerHTML = processJSON[0].title;
+                    this.btnGenerate.innerHTML = "Get new quote";
 
-                    // twttr.widgets.createShareButton(
-                    //     '',
-                    //     document.getElementById('tweetContainer'),
-                    //     {
-                    //         text: `${elemQuoteText.textContent} -${document.getElementById('quote-autor').textContent}`
-                    //     }
-                    // );
+                    //creating tweeter button
+                    document.getElementById('tweetContainer').innerHTML = '';
+
+                    twttr.widgets.createShareButton(
+                        '',
+                        document.getElementById('tweetContainer'),
+                        {
+                            text: `${this.quoteText.textContent} -${this.quoteAutor.textContent}`
+                        }
+                    );
                 })
-                .catch(function (err) {
+                .catch((err) => {
                     console.log(err);
-                    document.getElementById('quote-text').innerHTML = "OH NOOOOOOOOOO";
+                    this.quoteText.innerHTML = "Error occurs. Please check if CORS enabled.";
                 })            
-            });
+            })
         }
     }
+// tweeter function
+    window.twttr = (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0],
+            t = window.twttr || {};
+        if (d.getElementById(id)) return t;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://platform.twitter.com/widgets.js";
+        fjs.parentNode.insertBefore(js, fjs);
 
-    // window.twttr = (function(d, s, id) {
-    //     var js, fjs = d.getElementsByTagName(s)[0],
-    //         t = window.twttr || {};
-    //     if (d.getElementById(id)) return t;
-    //     js = d.createElement(s);
-    //     js.id = id;
-    //     js.src = "https://platform.twitter.com/widgets.js";
-    //     fjs.parentNode.insertBefore(js, fjs);
+        t._e = [];
+        t.ready = function(f) {
+            t._e.push(f);
+        };
 
-    //     t._e = [];
-    //     t.ready = function(f) {
-    //         t._e.push(f);
-    //     };
-
-    //     return t;
-    // }(document, "script", "twitter-wjs"));
-
-    console.log('hi again');
-
+        return t;
+    }(document, "script", "twitter-wjs"));
 
     let generateQuote = new GenerateQuote('#generate-quote', '#quote-text', '#quote-autor');
-    console.log(generateQuote);
     
-    generateQuote.addClickEvent();
-
-
-        //var btnGenerate = document.getElementById("generate-quote"),
-    // let btnTwit = document.getElementById("tweetMessage");
-
-        //btnGenerate.addEventListener("click", downloadNow);    
-
-        //var myQuote = 'http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1';
-        //https://cors-everywhere.herokuapp.com/https://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1
-
-        //var elemQuoteText = document.getElementById('quote-text');    
-
 };
