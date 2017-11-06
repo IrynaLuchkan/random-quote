@@ -6,6 +6,7 @@ window.onload = function () {
             this.quoteAutor = document.querySelector(quoteAutorIdent);
             this.myQuoteUrl = 'http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1';
             this.addClickEvent();
+            this.arr =[];
         }
 
         addClickEvent() {                       
@@ -13,24 +14,41 @@ window.onload = function () {
         }
 
         _getQuote() {
+            
             let qouteRequestResult = new Promise(result => {
                 let xmlhttp = new XMLHttpRequest();                
                 xmlhttp.open('GET', this.myQuoteUrl, true);
                 xmlhttp.setRequestHeader('Cache-Control', 'max-age=0');
                 xmlhttp.send();
-                xmlhttp.onreadystatechange = () => {
+                if (this.arr[0]) {
+                    this.arr[this.arr.length-1].abort();
+                    this.arr.shift();
+                }
+                this.arr.push(xmlhttp);                          
+                xmlhttp.onload = () => {
                     if (xmlhttp.readyState === 4 && xmlhttp.status === 200)
                     {                 
                         result(JSON.parse(xmlhttp.responseText));
-                    } else {this.quoteText.innerHTML = "Error occurs. Please check if CORS enabled.";};
+                    } else {
+                        if (xmlhttp.readyState === 1 ||
+                            xmlhttp.readyState === 2 ||
+                            xmlhttp.readyState === 3 ||
+                            xmlhttp.readyState === 4) {
+                                this.quoteText.innerHTML = 'Please wait. Quote will be here in a few seconds';
+                            }
+                        else {
+                        this.quoteText.innerHTML = 'Error occurs. Please check if CORS enabled.';
+                        };
+                    }
                 };
             }); 
             return qouteRequestResult;
         }
 
-        _parseQuoteInfo() {  
+        _parseQuoteInfo() {
             this.btnGenerate.innerHTML = 'Please wait';          
-            this._getQuote().then((qouteJSON) => {           
+            this._getQuote()
+            .then((qouteJSON) => {           
                 this.quoteText.innerHTML = qouteJSON[0].content;
                 this.quoteAutor.innerHTML = qouteJSON[0].title;
 
